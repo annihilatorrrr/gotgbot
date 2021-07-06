@@ -150,7 +150,7 @@ func (bot *Bot) GetWithContext(ctx context.Context, method string, params url.Va
 		totalHTTPErrors.With(prometheus.Labels{
 			"http_method": "GET",
 			"api_method":  method,
-		})
+		}).Inc()
 		return nil, fmt.Errorf("failed to execute GET request to %s: %w", method, err)
 	}
 	defer resp.Body.Close()
@@ -167,7 +167,7 @@ func (bot *Bot) GetWithContext(ctx context.Context, method string, params url.Va
 			"http_status_code": strconv.Itoa(resp.StatusCode),
 			"api_status_code":  strconv.Itoa(r.ErrorCode),
 			"description":      r.Description,
-		})
+		}).Inc()
 		return nil, &TelegramError{
 			Method:      method,
 			Params:      params,
@@ -221,7 +221,7 @@ func (bot *Bot) PostWithContext(ctx context.Context, method string, params url.V
 		totalHTTPErrors.With(prometheus.Labels{
 			"http_method": "POST",
 			"api_method":  method,
-		})
+		}).Inc()
 		return nil, fmt.Errorf("failed to execute POST request to %s: %w", method, err)
 	}
 	defer resp.Body.Close()
@@ -238,7 +238,7 @@ func (bot *Bot) PostWithContext(ctx context.Context, method string, params url.V
 			"http_status_code": strconv.Itoa(resp.StatusCode),
 			"api_status_code":  strconv.Itoa(r.ErrorCode),
 			"description":      r.Description,
-		})
+		}).Inc()
 		return nil, &TelegramError{
 			Method:      method,
 			Params:      params,
